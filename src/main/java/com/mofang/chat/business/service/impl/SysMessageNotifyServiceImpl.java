@@ -8,11 +8,14 @@ import java.util.Set;
 import org.json.JSONObject;
 
 import com.mofang.chat.business.model.SysMessageNotify;
+import com.mofang.chat.business.mysql.SysMessageNotifyDao;
+import com.mofang.chat.business.mysql.impl.SysMessageNotifyDaoImpl;
 import com.mofang.chat.business.redis.SysMessageNotifyRedis;
 import com.mofang.chat.business.redis.WriteQueueRedis;
 import com.mofang.chat.business.redis.impl.SysMessageNotifyRedisImpl;
 import com.mofang.chat.business.redis.impl.WriteQueueRedisImpl;
 import com.mofang.chat.business.service.SysMessageNotifyService;
+import com.mofang.chat.business.sysconf.common.SysMessageNotifyStatus;
 import com.mofang.chat.business.sysconf.common.WriteDataType;
 
 /**
@@ -24,6 +27,7 @@ public class SysMessageNotifyServiceImpl implements SysMessageNotifyService
 {
 	private final static SysMessageNotifyServiceImpl SERVICE = new SysMessageNotifyServiceImpl();
 	private SysMessageNotifyRedis sysMessageNotifyRedis = SysMessageNotifyRedisImpl.getInstance();
+	private SysMessageNotifyDao sysMessageNotifyDao = SysMessageNotifyDaoImpl.getInstance();
 	private WriteQueueRedis writeQueue = WriteQueueRedisImpl.getInstance();
 	
 	private SysMessageNotifyServiceImpl()
@@ -79,6 +83,14 @@ public class SysMessageNotifyServiceImpl implements SysMessageNotifyService
 		
 		///清空用户的系统消息通知列表
 		sysMessageNotifyRedis.deleteByUser(userId);
+		///更新用户的系统消息通知状态
+		sysMessageNotifyDao.updateStatusByUserId(userId, SysMessageNotifyStatus.READ);
 		return list;
+	}
+
+	@Override
+	public List<SysMessageNotify> getList(long userId, long start, long size) throws Exception
+	{
+		return sysMessageNotifyDao.getList(userId, start, size);
 	}
 }

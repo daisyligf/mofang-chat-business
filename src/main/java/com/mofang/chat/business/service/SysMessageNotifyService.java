@@ -16,4 +16,6 @@ public interface SysMessageNotifyService
 	public SysMessageNotify getInfo(long notifyId) throws Exception;
 	
 	public List<SysMessageNotify> getList(long userId) throws Exception;
+	
+	public List<SysMessageNotify> getList(long userId, long start, long size) throws Exception;
 }

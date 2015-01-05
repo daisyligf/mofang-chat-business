@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.json.JSONObject;
 
+import com.mofang.chat.business.sysconf.common.PostReplyNotifyStatus;
 import com.mofang.framework.data.mysql.core.annotation.ColumnName;
 import com.mofang.framework.data.mysql.core.annotation.PrimaryKey;
 import com.mofang.framework.data.mysql.core.annotation.TableName;
@@ -45,6 +46,8 @@ public class PostReplyNotify
 	private String clickAction;
 	@ColumnName(name="create_time")
 	private Date createTime;
+	@ColumnName(name="status")
+	private Integer status = PostReplyNotifyStatus.UNREAD;
 	
 	public Long getNotifyId()
 	{
@@ -186,6 +189,16 @@ public class PostReplyNotify
 		this.createTime = createTime;
 	}
 	
+	public Integer getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(Integer status)
+	{
+		this.status = status;
+	}
+
 	public JSONObject toJson()
 	{
 		JSONObject json = new JSONObject();
@@ -205,6 +218,7 @@ public class PostReplyNotify
 			json.put("is_show_notify", isShowNotify);
 			json.put("click_act", clickAction);
 			json.put("create_time", createTime);
+			json.put("status", status);
 			return json;
 		}
 		catch(Exception e)
@@ -232,6 +246,7 @@ public class PostReplyNotify
 			model.setIsShowNotify(json.optBoolean("is_show_notify", false));
 			model.setClickAction(json.optString("click_act", ""));
 			model.setCreateTime(new Date(json.optLong("create_time", System.currentTimeMillis())));
+			model.setStatus(json.optInt("status", PostReplyNotifyStatus.UNREAD));
 			return model;
 		}
 		catch(Exception e)

@@ -8,11 +8,14 @@ import java.util.Set;
 import org.json.JSONObject;
 
 import com.mofang.chat.business.model.PostReplyNotify;
+import com.mofang.chat.business.mysql.PostReplyNotifyDao;
+import com.mofang.chat.business.mysql.impl.PostReplyNotifyDaoImpl;
 import com.mofang.chat.business.redis.PostReplyNotifyRedis;
 import com.mofang.chat.business.redis.WriteQueueRedis;
 import com.mofang.chat.business.redis.impl.PostReplyNotifyRedisImpl;
 import com.mofang.chat.business.redis.impl.WriteQueueRedisImpl;
 import com.mofang.chat.business.service.PostReplyNotifyService;
+import com.mofang.chat.business.sysconf.common.PostReplyNotifyStatus;
 import com.mofang.chat.business.sysconf.common.WriteDataType;
 
 /**
@@ -24,6 +27,7 @@ public class PostReplyNotifyServiceImpl implements PostReplyNotifyService
 {
 	private final static PostReplyNotifyServiceImpl SERVICE = new PostReplyNotifyServiceImpl();
 	private PostReplyNotifyRedis postReplyNotifyRedis = PostReplyNotifyRedisImpl.getInstance();
+	private PostReplyNotifyDao postReplyNotifyDao = PostReplyNotifyDaoImpl.getInstance();
 	private WriteQueueRedis writeQueue = WriteQueueRedisImpl.getInstance();
 	
 	private PostReplyNotifyServiceImpl()
@@ -79,6 +83,14 @@ public class PostReplyNotifyServiceImpl implements PostReplyNotifyService
 		
 		///清空用户的帖子回复通知列表
 		postReplyNotifyRedis.deleteByUser(userId);
+		///更新用户的帖子回复通知状态
+		postReplyNotifyDao.updateStatusByUserId(userId, PostReplyNotifyStatus.READ);
 		return list;
+	}
+
+	@Override
+	public List<PostReplyNotify> getList(long userId, long start, long size) throws Exception
+	{
+		return postReplyNotifyDao.getList(userId, start, size);
 	}
 }

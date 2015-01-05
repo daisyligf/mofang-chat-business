@@ -16,4 +16,6 @@ public interface PostReplyNotifyService
 	public PostReplyNotify getInfo(long notifyId) throws Exception;
 	
 	public List<PostReplyNotify> getList(long userId) throws Exception;
+	
+	public List<PostReplyNotify> getList(long userId, long start, long size) throws Exception;
 }

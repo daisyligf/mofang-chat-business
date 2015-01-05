@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.json.JSONObject;
 
+import com.mofang.chat.business.sysconf.common.SysMessageNotifyStatus;
 import com.mofang.framework.data.mysql.core.annotation.ColumnName;
 import com.mofang.framework.data.mysql.core.annotation.PrimaryKey;
 import com.mofang.framework.data.mysql.core.annotation.TableName;
@@ -40,6 +41,8 @@ public class SysMessageNotify
 	private String clickAction;
 	@ColumnName(name="create_time")
 	private Date createTime;
+	@ColumnName(name="status")
+	private Integer status = SysMessageNotifyStatus.UNREAD;
 	
 	public Long getNotifyId()
 	{
@@ -151,6 +154,16 @@ public class SysMessageNotify
 		this.createTime = createTime;
 	}
 	
+	public Integer getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(Integer status)
+	{
+		this.status = status;
+	}
+
 	public JSONObject toJson()
 	{
 		JSONObject json = new JSONObject();
@@ -170,6 +183,7 @@ public class SysMessageNotify
 			json.put("is_show_notify", isShowNotify);
 			json.put("click_act", clickAction);
 			json.put("create_time", createTime);
+			json.put("status", status);
 			return json;
 		}
 		catch(Exception e)
@@ -197,6 +211,7 @@ public class SysMessageNotify
 			model.setIsShowNotify(json.optBoolean("is_show_notify", false));
 			model.setClickAction(json.optString("click_act", ""));
 			model.setCreateTime(new Date(json.optLong("create_time", System.currentTimeMillis())));
+			model.setStatus(json.optInt("status", SysMessageNotifyStatus.UNREAD));
 			return model;
 		}
 		catch(Exception e)
