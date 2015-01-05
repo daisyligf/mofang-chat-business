@@ -16,4 +16,6 @@ public interface PostReplyNotifyDao
 	public void updateStatusByUserId(long userId, int status) throws Exception;
 	
 	public List<PostReplyNotify> getList(long userId, long start, long size) throws Exception;
+	
+	public long getCount(long userId) throws Exception;
 }

@@ -63,4 +63,13 @@ public class PostReplyNotifyDaoImpl extends AbstractMysqlSupport<PostReplyNotify
 		where.append(userEqual).append(orderby).append(limit);
 		return super.getList(where);
 	}
+
+	@Override
+	public long getCount(long userId) throws Exception
+	{
+		Operand where = new WhereOperand();
+		Operand userEqual = new EqualOperand("user_id", userId);
+		where.append(userEqual);
+		return super.getCount(where);
+	}
 }

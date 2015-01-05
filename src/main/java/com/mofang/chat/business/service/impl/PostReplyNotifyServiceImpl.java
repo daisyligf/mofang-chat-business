@@ -93,4 +93,10 @@ public class PostReplyNotifyServiceImpl implements PostReplyNotifyService
 	{
 		return postReplyNotifyDao.getList(userId, start, size);
 	}
+
+	@Override
+	public long getCount(long userId) throws Exception
+	{
+		return postReplyNotifyDao.getCount(userId);
+	}
 }

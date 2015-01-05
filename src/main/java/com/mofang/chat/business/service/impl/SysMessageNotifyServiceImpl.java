@@ -93,4 +93,10 @@ public class SysMessageNotifyServiceImpl implements SysMessageNotifyService
 	{
 		return sysMessageNotifyDao.getList(userId, start, size);
 	}
+
+	@Override
+	public long getCount(long userId) throws Exception
+	{
+		return sysMessageNotifyDao.getCount(userId);
+	}
 }
