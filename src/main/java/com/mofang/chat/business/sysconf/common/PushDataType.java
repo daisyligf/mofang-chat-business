@@ -46,4 +46,9 @@ public class PushDataType
 	 * 用户任务通知
 	 */
 	public final static int USER_TASK_NOTIFY = 8;
+	
+	/**
+	 * 用户获得勋章通知
+	 */
+	public final static int USER_MEDAL_NOTIFY = 9;
 }

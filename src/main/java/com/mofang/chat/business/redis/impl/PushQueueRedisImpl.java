@@ -47,7 +47,8 @@ public class PushQueueRedisImpl implements PushQueueRedis
 						|| dataType == PushDataType.FRIEND_NOTIFY
 						|| dataType == PushDataType.POST_REPLY_NOTIFY
 						|| dataType == PushDataType.SYS_MESSAGE_NOTIFY
-						|| dataType == PushDataType.USER_TASK_NOTIFY)
+						|| dataType == PushDataType.USER_TASK_NOTIFY
+						|| dataType == PushDataType.USER_MEDAL_NOTIFY)
 					key = SysRedisKey.PRIVATE_MESSAGE_PUSH_QUEUE_KEY;
 				
 				if(StringUtil.isNullOrEmpty(key))
@@ -76,7 +77,8 @@ public class PushQueueRedisImpl implements PushQueueRedis
 						 || dataType == PushDataType.FRIEND_NOTIFY
 						 || dataType == PushDataType.POST_REPLY_NOTIFY
 						 || dataType == PushDataType.SYS_MESSAGE_NOTIFY
-						 || dataType == PushDataType.USER_TASK_NOTIFY)
+						 || dataType == PushDataType.USER_TASK_NOTIFY
+						 || dataType == PushDataType.USER_MEDAL_NOTIFY)
 					key = SysRedisKey.PRIVATE_MESSAGE_PUSH_QUEUE_KEY;
 				
 				if(StringUtil.isNullOrEmpty(key))
