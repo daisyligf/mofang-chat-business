@@ -205,4 +205,10 @@ public class SysRedisKey
 	public final static String SYS_MESSAGE_NOTIFY_INFO_KEY_PREFIX = "sys_message_notify_info_";
 	
 	public final static String USER_SYS_MESSAGE_NOTIFY_LIST_KEY_PREFIX = "user_sys_message_notify_list_";
+	
+	public final static String FEED_RECOMMEND_NOTIFY_ID_NCREMENT_KEY = "feed_recommend_notify_id";
+	
+	public final static String FEED_RECOMMEND_NOTIFY_INFO_KEY_PREFIX = "feed_recommend_notify_info_";
+	
+	public final static String USER_FEED_RECOMMEND_NOTIFY_LIST_KEY_PREFIX = "user_feed_recommend_notify_list_";
 }

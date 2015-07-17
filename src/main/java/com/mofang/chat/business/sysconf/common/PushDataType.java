@@ -51,4 +51,9 @@ public class PushDataType
 	 * 用户获得勋章通知
 	 */
 	public final static int USER_MEDAL_NOTIFY = 9;
+	
+	/**
+	 * Feed点赞通知
+	 */
+	public final static int FEED_RECOMMEND_NOTIFY = 10;
 }

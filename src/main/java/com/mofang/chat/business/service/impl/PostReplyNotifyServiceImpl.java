@@ -91,12 +91,24 @@ public class PostReplyNotifyServiceImpl implements PostReplyNotifyService
 	@Override
 	public List<PostReplyNotify> getList(long userId, long start, long size) throws Exception
 	{
-		return postReplyNotifyDao.getList(userId, start, size);
+		///清空用户的帖子回复通知列表
+		postReplyNotifyRedis.deleteByUser(userId);
+		///获取通知列表
+		List<PostReplyNotify> list = postReplyNotifyDao.getList(userId, start, size);
+		///更新用户的帖子回复通知状态
+		postReplyNotifyDao.updateStatusByUserId(userId, PostReplyNotifyStatus.READ);
+		return list;
 	}
 
 	@Override
 	public long getCount(long userId) throws Exception
 	{
 		return postReplyNotifyDao.getCount(userId);
+	}
+
+	@Override
+	public long getUnreadCount(long userId) throws Exception
+	{
+		return postReplyNotifyRedis.getCount(userId);
 	}
 }

@@ -126,7 +126,23 @@ public class SysMessageNotifyRedisImpl implements SysMessageNotifyRedis
 			public Set<String> execute(Jedis jedis) throws Exception
 			{
 				String key = SysRedisKey.USER_SYS_MESSAGE_NOTIFY_LIST_KEY_PREFIX + userId;
-				return jedis.zrevrange(key, 0, Integer.MAX_VALUE);
+				return jedis.zrevrange(key, 0, -1);
+			}
+		};
+		return SysObject.REDIS_SLAVE_EXECUTOR.execute(worker);
+	}
+
+	@Override
+	public long getCount(final long userId) throws Exception
+	{
+		RedisWorker<Long> worker = new RedisWorker<Long>()
+		{
+			@Override
+			public Long execute(Jedis jedis) throws Exception
+			{
+				String key = SysRedisKey.USER_SYS_MESSAGE_NOTIFY_LIST_KEY_PREFIX + userId;
+				Long count = jedis.zcard(key);
+				return null == count ? 0L : count;
 			}
 		};
 		return SysObject.REDIS_SLAVE_EXECUTOR.execute(worker);

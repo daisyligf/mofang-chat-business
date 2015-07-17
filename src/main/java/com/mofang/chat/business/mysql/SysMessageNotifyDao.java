@@ -18,4 +18,6 @@ public interface SysMessageNotifyDao
 	public List<SysMessageNotify> getList(long userId, long start, long size) throws Exception;
 	
 	public long getCount(long userId) throws Exception;
+	
+	public long getCount(long userId, int status) throws Exception;
 }

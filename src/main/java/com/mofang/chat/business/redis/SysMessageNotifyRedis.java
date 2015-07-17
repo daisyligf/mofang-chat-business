@@ -48,4 +48,12 @@ public interface SysMessageNotifyRedis
 	 * @throws Exception
 	 */
 	public Set<String> getList(long userId) throws Exception;
+	
+	/**
+	 * 获取未读通知总数
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public long getCount(long userId) throws Exception;
 }

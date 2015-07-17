@@ -6,8 +6,8 @@ import org.json.JSONObject;
 
 import redis.clients.jedis.Jedis;
 
-import com.mofang.chat.business.model.PostReplyNotify;
-import com.mofang.chat.business.redis.PostReplyNotifyRedis;
+import com.mofang.chat.business.model.FeedRecommendNotify;
+import com.mofang.chat.business.redis.FeedRecommendNotifyRedis;
 import com.mofang.chat.business.sysconf.SysObject;
 import com.mofang.chat.business.sysconf.SysRedisKey;
 import com.mofang.framework.data.redis.RedisWorker;
@@ -19,14 +19,14 @@ import com.mofang.framework.util.StringUtil;
  * @author zhaodx
  *
  */
-public class PostReplyNotifyRedisImpl implements PostReplyNotifyRedis
+public class FeedRecommendNotifyRedisImpl implements FeedRecommendNotifyRedis
 {
-	private final static PostReplyNotifyRedisImpl REDIS = new PostReplyNotifyRedisImpl();
+	private final static FeedRecommendNotifyRedisImpl REDIS = new FeedRecommendNotifyRedisImpl();
 	
-	private PostReplyNotifyRedisImpl()
+	private FeedRecommendNotifyRedisImpl()
 	{}
 	
-	public static PostReplyNotifyRedisImpl getInstance()
+	public static FeedRecommendNotifyRedisImpl getInstance()
 	{
 		return REDIS;
 	}
@@ -34,22 +34,22 @@ public class PostReplyNotifyRedisImpl implements PostReplyNotifyRedis
 	@Override
 	public long getMaxNotifyId() throws Exception
 	{
-		RedisWorker<Long> worker = new IncrWorker(SysRedisKey.POST_REPLY_NOTIFY_ID_NCREMENT_KEY);
+		RedisWorker<Long> worker = new IncrWorker(SysRedisKey.FEED_RECOMMEND_NOTIFY_ID_NCREMENT_KEY);
 		return SysObject.REDIS_MASTER_EXECUTOR.execute(worker);
 	}
 
 	@Override
-	public boolean save(final PostReplyNotify model) throws Exception
+	public boolean save(final FeedRecommendNotify model) throws Exception
 	{
 		RedisWorker<Boolean> worker = new RedisWorker<Boolean>()
 		{
 			@Override
 			public Boolean execute(Jedis jedis) throws Exception
 			{
-				String infoKey = SysRedisKey.POST_REPLY_NOTIFY_INFO_KEY_PREFIX + model.getNotifyId();
-				String listKey = SysRedisKey.USER_POST_REPLY_NOTIFY_LIST_KEY_PREFIX + model.getUserId();
+				String infoKey = SysRedisKey.FEED_RECOMMEND_NOTIFY_INFO_KEY_PREFIX + model.getNotifyId();
+				String listKey = SysRedisKey.USER_FEED_RECOMMEND_NOTIFY_LIST_KEY_PREFIX + model.getUserId();
 				
-				///将帖子回复通知信息添加到redis中
+				///将系统消息通知信息添加到redis中
 				JSONObject json = model.toJson();
 				jedis.set(infoKey, json.toString());
 				
@@ -69,20 +69,20 @@ public class PostReplyNotifyRedisImpl implements PostReplyNotifyRedis
 			@Override
 			public Boolean execute(Jedis jedis) throws Exception
 			{
-				///将帖子回复通知信息从redis中删除
+				///将feed点赞通知信息从redis中删除
 				Set<String> notifyIds = getList(userId);
 				if(null != notifyIds)
 				{
 					String infoKey = null;
 					for(String notifyId : notifyIds)
 					{
-						infoKey = SysRedisKey.POST_REPLY_NOTIFY_INFO_KEY_PREFIX + notifyId;
+						infoKey = SysRedisKey.FEED_RECOMMEND_NOTIFY_INFO_KEY_PREFIX + notifyId;
 						jedis.del(infoKey);
 					}
 				}
 				
-				///将用户对应的帖子回复通知列表从redis中删除
-				String listKey = SysRedisKey.USER_POST_REPLY_NOTIFY_LIST_KEY_PREFIX + userId;
+				///将用户对应的feed点赞通知列表从redis中删除
+				String listKey = SysRedisKey.USER_FEED_RECOMMEND_NOTIFY_LIST_KEY_PREFIX + userId;
 				jedis.del(listKey);
 				return true;
 			}
@@ -91,20 +91,20 @@ public class PostReplyNotifyRedisImpl implements PostReplyNotifyRedis
 	}
 
 	@Override
-	public PostReplyNotify getInfo(final long notifyId)
+	public FeedRecommendNotify getInfo(final long notifyId) 
 	{
-		RedisWorker<PostReplyNotify> worker = new RedisWorker<PostReplyNotify>()
+		RedisWorker<FeedRecommendNotify> worker = new RedisWorker<FeedRecommendNotify>()
 		{
 			@Override
-			public PostReplyNotify execute(Jedis jedis) throws Exception
+			public FeedRecommendNotify execute(Jedis jedis) throws Exception
 			{
-				String key = SysRedisKey.POST_REPLY_NOTIFY_INFO_KEY_PREFIX + notifyId;
+				String key = SysRedisKey.FEED_RECOMMEND_NOTIFY_INFO_KEY_PREFIX + notifyId;
 				String value = jedis.get(key);
 				if(StringUtil.isNullOrEmpty(value))
 					return null;
 				
 				JSONObject json = new JSONObject(value);
-				return PostReplyNotify.buildByJson(json);
+				return FeedRecommendNotify.buildByJson(json);
 			}
 		};
 		try
@@ -125,7 +125,7 @@ public class PostReplyNotifyRedisImpl implements PostReplyNotifyRedis
 			@Override
 			public Set<String> execute(Jedis jedis) throws Exception
 			{
-				String key = SysRedisKey.USER_POST_REPLY_NOTIFY_LIST_KEY_PREFIX + userId;
+				String key = SysRedisKey.USER_FEED_RECOMMEND_NOTIFY_LIST_KEY_PREFIX + userId;
 				return jedis.zrevrange(key, 0, -1);
 			}
 		};
@@ -140,11 +140,10 @@ public class PostReplyNotifyRedisImpl implements PostReplyNotifyRedis
 			@Override
 			public Long execute(Jedis jedis) throws Exception
 			{
-				String key = SysRedisKey.USER_POST_REPLY_NOTIFY_LIST_KEY_PREFIX + userId;
-				Long count = jedis.zcard(key);
-				return null == count ? 0L : count;
+				String key = SysRedisKey.USER_FEED_RECOMMEND_NOTIFY_LIST_KEY_PREFIX + userId;
+				return jedis.zcard(key);
 			}
 		};
 		return SysObject.REDIS_SLAVE_EXECUTOR.execute(worker);
-	}
+	} 
 }

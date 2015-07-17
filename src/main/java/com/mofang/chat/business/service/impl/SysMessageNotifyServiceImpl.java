@@ -91,12 +91,24 @@ public class SysMessageNotifyServiceImpl implements SysMessageNotifyService
 	@Override
 	public List<SysMessageNotify> getList(long userId, long start, long size) throws Exception
 	{
-		return sysMessageNotifyDao.getList(userId, start, size);
+		///清空用户的系统消息通知列表
+		sysMessageNotifyRedis.deleteByUser(userId);
+		///获取通知列表		
+		List<SysMessageNotify> list = sysMessageNotifyDao.getList(userId, start, size);
+		///更新用户的系统消息通知状态
+		sysMessageNotifyDao.updateStatusByUserId(userId, SysMessageNotifyStatus.READ);
+		return list;
 	}
 
 	@Override
 	public long getCount(long userId) throws Exception
 	{
 		return sysMessageNotifyDao.getCount(userId);
+	}
+
+	@Override
+	public long getUnreadCount(long userId) throws Exception
+	{
+		return sysMessageNotifyRedis.getCount(userId);
 	}
 }

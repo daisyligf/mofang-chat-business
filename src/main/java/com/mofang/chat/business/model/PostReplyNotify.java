@@ -40,6 +40,12 @@ public class PostReplyNotify
 	private Long replyUserId;
 	@ColumnName(name="reply_type")
 	private Integer replyType;
+	@ColumnName(name = "forum_id")
+	private Long forumId;
+	@ColumnName(name = "forum_name")
+	private String forumName;
+	@ColumnName(name = "position")
+	private Integer position;
 	@ColumnName(name="is_show_notify")
 	private Boolean isShowNotify;
 	@ColumnName(name="click_action")
@@ -159,6 +165,30 @@ public class PostReplyNotify
 		this.replyType = replyType;
 	}
 	
+	public Long getForumId() {
+		return forumId;
+	}
+
+	public void setForumId(Long forumId) {
+		this.forumId = forumId;
+	}
+
+	public String getForumName() {
+		return forumName;
+	}
+
+	public void setForumName(String forumName) {
+		this.forumName = forumName;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
 	public Boolean getIsShowNotify()
 	{
 		return isShowNotify;
@@ -215,6 +245,9 @@ public class PostReplyNotify
 			json.put("reply_time", replyTime);
 			json.put("reply_user_id", replyUserId);
 			json.put("reply_type", replyType);
+			json.put("forum_id", forumId);
+			json.put("forum_name", forumName);
+			json.put("position", position);
 			json.put("is_show_notify", isShowNotify);
 			json.put("click_act", clickAction);
 			json.put("create_time", createTime);
@@ -243,6 +276,9 @@ public class PostReplyNotify
 			model.setReplyTime(new Date(json.optLong("reply_time", System.currentTimeMillis())));
 			model.setReplyUserId(json.optLong("reply_user_id", 0L));
 			model.setReplyType(json.optInt("reply_type", 1));
+			model.setForumId(json.optLong("forum_id", 0L));
+			model.setForumName(json.optString("forum_name", ""));
+			model.setPosition(json.optInt("position", 0));
 			model.setIsShowNotify(json.optBoolean("is_show_notify", false));
 			model.setClickAction(json.optString("click_act", ""));
 			model.setCreateTime(new Date(json.optLong("create_time", System.currentTimeMillis())));

@@ -169,7 +169,8 @@ public class SysObject
 			config.setMinConnectionsPerPartition(minConnectionsPerPartition);
 			config.setAcquireIncrement(acquireIncrement);
 			config.setReleaseHelperThreads(releaseHelperThreads);
-			config.setIdleMaxAge(3, TimeUnit.SECONDS);
+			config.setIdleConnectionTestPeriod(60, TimeUnit.SECONDS);
+			config.setIdleMaxAgeInSeconds(240);
 			return config;
         }
         catch(Exception e)

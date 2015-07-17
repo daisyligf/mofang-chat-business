@@ -41,4 +41,9 @@ public class WriteDataType
 	 * 系统消息通知
 	 */
 	public final static int SYS_MESSAGE_NOTIFY = 7;
+	
+	/**
+	 * Feed点赞通知
+	 */
+	public final static int FEED_RECOMMEND = 8;
 }

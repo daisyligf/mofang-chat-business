@@ -2,20 +2,20 @@ package com.mofang.chat.business.mysql;
 
 import java.util.List;
 
-import com.mofang.chat.business.model.PostReplyNotify;
+import com.mofang.chat.business.model.FeedRecommendNotify;
 
 /**
  * 
  * @author zhaodx
  *
  */
-public interface PostReplyNotifyDao
+public interface FeedRecommendNotifyDao
 {
-	public boolean add(PostReplyNotify model) throws Exception;
+	public boolean add(FeedRecommendNotify model) throws Exception;
 	
 	public void updateStatusByUserId(long userId, int status) throws Exception;
 	
-	public List<PostReplyNotify> getList(long userId, long start, long size) throws Exception;
+	public List<FeedRecommendNotify> getList(long userId, long start, long size) throws Exception;
 	
 	public long getCount(long userId) throws Exception;
 	

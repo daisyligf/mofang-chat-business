@@ -6,6 +6,7 @@ import com.mofang.chat.business.model.SysMessageNotify;
 import com.mofang.chat.business.mysql.SysMessageNotifyDao;
 import com.mofang.chat.business.sysconf.SysObject;
 import com.mofang.framework.data.mysql.AbstractMysqlSupport;
+import com.mofang.framework.data.mysql.core.criterion.operand.AndOperand;
 import com.mofang.framework.data.mysql.core.criterion.operand.EqualOperand;
 import com.mofang.framework.data.mysql.core.criterion.operand.LimitOperand;
 import com.mofang.framework.data.mysql.core.criterion.operand.Operand;
@@ -70,6 +71,17 @@ public class SysMessageNotifyDaoImpl extends AbstractMysqlSupport<SysMessageNoti
 		Operand where = new WhereOperand();
 		Operand userEqual = new EqualOperand("user_id", userId);
 		where.append(userEqual);
+		return super.getCount(where);
+	}
+
+	@Override
+	public long getCount(long userId, int status) throws Exception
+	{
+		Operand where = new WhereOperand();
+		Operand userEqual = new EqualOperand("user_id", userId);
+		Operand statusEqual = new EqualOperand("status", status);
+		Operand and = new AndOperand();
+		where.append(userEqual).append(and).append(statusEqual);
 		return super.getCount(where);
 	}
 }
